@@ -16,7 +16,7 @@ var flame2 = 0;
 var lock = false;
 
 $(document).ready(function() {
-    $("#main").append(`<p><b>Star Force Calculator</b></p>
+    $("#main").append(`
       <p>
         <input type="radio" id="eq_type_1" name="eq_type" value="0" checked>Armor
         <input type="radio" id="eq_type_2" name="eq_type" value="1">Weapon
