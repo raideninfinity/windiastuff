@@ -2,17 +2,34 @@
 <html>
 <head>
     <meta charset="UTF-8"/>
-    <title>Star Force Calculator</title>
+    <title>Windia Star Force Calculator</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script>
 		if(!window.jQuery) {
 			document.write('<script src="lib/jquery-3.6.0.min.js"><\/script>')
 		}
 	</script>
+  <script src="starforce.js"></script>
+  <style>
+    td, th {
+      border: 1px solid #ddd;
+      padding: 4px;
+      min-width: 80px;
+    }
+    th {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      background-color: #04AA6D;
+      color: white;
+    }
+    tr:nth-child(4){background-color: #aafef1;}
+    tr:nth-child(11){background-color: #aafeaa;}
+    tr:nth-child(15){background-color: #edaafe;}
+    
+    tr td{text-align: center;}
+  </style>
 </head>
 <body>
-  <p><a href="index.html">Back</a></p>
-  <p><b>Star Force Calculator</b></p>
-  
+<div id="main"></div>
 </body>
 </html>
