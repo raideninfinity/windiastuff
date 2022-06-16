@@ -44,7 +44,6 @@ $(document).ready(function() {
     for(let i = 0; i < 16; i++){
       let row = document.createElement("tr");
       let row_id = i;
-      if (row_id == 0) row_id = "Base";
       row.innerHTML = `<td>${row_id}</td><td></td><td></td><td></td><td></td>`;
       starRows.push(row);
       $("#table1").append(row);
