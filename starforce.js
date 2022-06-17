@@ -6,7 +6,6 @@ var stat2nodes = [];
 var stat3nodes = [];
 var eq_type = 0;
 var stars = 0;
-var superior = false;
 var overall = false;
 var level = 0;
 var stat1 = 0;
@@ -21,7 +20,9 @@ $(document).ready(function() {
       <p>
         <input type="radio" id="eq_type_1" name="eq_type" value="0" checked>Armor
         <input type="radio" id="eq_type_2" name="eq_type" value="1">Weapon
-        <input type="checkbox" id="check0" name="c_superior" value="superior">Superior
+        <input type="radio" id="eq_type_3" name="eq_type" value="2">Superior
+        <input type="radio" id="eq_type_4" name="eq_type" value="3">Tyrant Cape
+        <!--<input type="checkbox" id="check0" name="c_superior" value="superior">Superior-->
       </p>  
       <table id="table1">
       </table>
@@ -29,6 +30,8 @@ $(document).ready(function() {
       <a href="index.html">Back</a></p>`);
     $("#eq_type_1").change(radioChange);
     $("#eq_type_2").change(radioChange);
+    $("#eq_type_3").change(radioChange);
+    $("#eq_type_4").change(radioChange);
     $("#check0").change(superiorChange);
     //Build Table
     $("#table1").append("<tr><th></th><th>Stat1</th><th>Stat2</th><th>Atk</th><th>Stars</th></tr>");
@@ -241,17 +244,28 @@ function recalcFlame(sel){
 }
 
 function get_stat_mult(){
-  if (superior)
-    return 5.0;
-  else
+  if (eq_type == 0) //armor
     return 3.5;
+  else if (eq_type == 1) //weapon
+    return 3.5;
+  else if (eq_type == 2) //superior
+    return 5.0;
+  else if (eq_type == 3) //tyrant cape
+    return 5.0;
+  else  
+    return 0;
 }
 
 function get_atk_mult(){
   if (eq_type == 0) //armor
-    return superior ? 2.5 : 0;
+    return 0;
   else if (eq_type == 1) //weapon
-    return superior ? 2.5 : 2.9;
+    return 2.9;
+  else if (eq_type == 2) //superior
+    return 2.5;
+  else if (eq_type == 3) //tyrant cape
+    return 2.5;
+  else  
     return 0;
 }
 
@@ -269,15 +283,19 @@ function reverse_atk(atk, atk_mult, stars){
     else return atk;
     target_base = Math.ceil(target_base);
     //verification
+    let attempts = 0;
     while(true){
+      attempts++;
       let a = target_base;
       if (stars >= 4) a += Math.floor(target_base / 50);
       if (stars >= 5) a += Math.floor(2 * target_base / 50);
       if (stars >= 6) a += Math.floor(3 * target_base / 50);
       if (stars >= 7) a += Math.floor(4 * target_base / 50);
+      a = Math.floor(a);
       if (a < atk) target_base++;
       else if (a > atk) target_base--;
       else break;
+      if (attempts > 10) break;
     }
     //return
     return target_base;
@@ -285,11 +303,15 @@ function reverse_atk(atk, atk_mult, stars){
     target_base = atk - (stars * atk_mult * level / 90)
     target_base = target_base * atk_top[stars] / atk_btm[stars];
     target_base = Math.ceil(target_base);
+    let attempts = 0;
     while(true){
+      attempts++;
       let a = target_base + (target_base / 5.0) * (stars / 15) + atk_mult * (level / 90) * stars;
+      a = Math.floor(a);
       if (a < atk) target_base++;
       else if (a > atk) target_base--;
       else break;
+      if (attempts > 10) break;
     }     
     return target_base;
   }
@@ -304,13 +326,17 @@ function reverse_stat(stat, stat_mult, stars){
   target_base = stat - (stars * stat_mult * level / 90);
   target_base = target_base * stat_top[stars] / stat_btm[stars];
   target_base = Math.ceil(target_base);
+  let attempts = 0;
   while(true){
+    attempts++;
     let a = target_base + (target_base / 7.5) * (stars / 15) + stat_mult * (level / 90) * stars;
-      if (a < stat) target_base++;
-      else if (a > stat) target_base--;
+    a = Math.floor(a);
+    if (a < stat) target_base++;
+    else if (a > stat) target_base--;
     else break;
+    console.log(`a ${a} stat ${stat} target_base ${target_base}`);
+    if (attempts > 10) break;
   }  
-  console.log(target_base);
   return target_base;
 }
 
@@ -351,4 +377,24 @@ function recalcStats(){
     stat3nodes[i].innerText = Math.floor(s3);
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
