@@ -31,6 +31,7 @@ $(document).ready(function() {
       <p>Choose star amount if reversing to find base stat.</p>
       <p>+ Flame: Adds max flame to the base stat.</p>
       <p>- Flame: Removes flame to obtain base stat.</p>
+      <p>Last Updated: 17 June 2022 11:13 PM GMT+8</p>
       <a href="index.html">Back</a></p>`);
     $("#eq_type_1").change(radioChange);
     $("#eq_type_2").change(radioChange);
