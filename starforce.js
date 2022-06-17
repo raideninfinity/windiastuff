@@ -6,6 +6,7 @@ var stat2nodes = [];
 var stat3nodes = [];
 var eq_type = 0;
 var stars = 0;
+var superior = false;
 var overall = false;
 var level = 0;
 var stat1 = 0;
@@ -20,8 +21,7 @@ $(document).ready(function() {
       <p>
         <input type="radio" id="eq_type_1" name="eq_type" value="0" checked>Armor
         <input type="radio" id="eq_type_2" name="eq_type" value="1">Weapon
-        <!--<input type="radio" id="eq_type_3" name="eq_type" value="2">Superior Armor-->
-        <!--<input type="radio" id="eq_type_4" name="eq_type" value="3">Superior Weapon-->
+        <input type="checkbox" id="check0" name="c_superior" value="superior">Superior
       </p>  
       <table id="table1">
       </table>
@@ -29,8 +29,7 @@ $(document).ready(function() {
       <a href="index.html">Back</a></p>`);
     $("#eq_type_1").change(radioChange);
     $("#eq_type_2").change(radioChange);
-    $("#eq_type_3").change(radioChange);
-    $("#eq_type_4").change(radioChange);
+    $("#check0").change(superiorChange);
     //Build Table
     $("#table1").append("<tr><th></th><th>Stat1</th><th>Stat2</th><th>Atk</th><th>Stars</th></tr>");
     let row1 = document.createElement("tr");
@@ -117,7 +116,14 @@ $(document).ready(function() {
       stat2nodes.push(node2);
       let node3 = row.childNodes[3];
       node3.innerText = "0";
-      stat3nodes.push(node3);      
+      stat3nodes.push(node3);  
+      if (i == 0){
+        let btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = 'Flame';
+        btn.onclick = maxFlames;
+        row.childNodes[4].append(btn);
+      }
     }
     //Set Listeners
     currentRow.childNodes[1].firstChild.addEventListener("change", numChange);
@@ -129,6 +135,31 @@ $(document).ready(function() {
     flameRow.childNodes[3].firstChild.addEventListener("change", overallChange);
     flameRow.childNodes[4].firstChild.addEventListener("change", levelChange);
 });
+
+function maxFlames(){
+  if (lock) return;
+  lock = true;  
+  let f1 = flameRow.childNodes[1].firstChild;
+  let f2 = flameRow.childNodes[2].firstChild;
+  let s1 = currentRow.childNodes[1].firstChild;
+  let s2 = currentRow.childNodes[2].firstChild;
+  if (f1.selectedIndex == 0 && parseInt(s1.value) > 0){
+    f1.selectedIndex = 10;
+    let v1 = parseInt(s1.value) + parseInt(f1.value);
+    s1.value = v1;
+  }
+  if (f2.selectedIndex == 0 && parseInt(s2.value) > 0){
+    f2.selectedIndex = 10;
+    let v2 = parseInt(s2.value) + parseInt(f2.value);
+    s2.value = v2;
+  }
+  flame1 = parseInt(f1.value);
+  flame2 = parseInt(f2.value);
+  stat1 = parseInt(s1.value);
+  stat2 = parseInt(s2.value);
+  recalcStats();
+  lock = false;
+}
 
 function radioChange(){
   if (lock) return;
@@ -191,6 +222,14 @@ function overallChange(){
   lock = false;    
 }
 
+function superiorChange(){
+  if (lock) return;
+  lock = true; 
+  superior = this.checked;
+  recalcStats();
+  lock = false;    
+}
+
 function recalcFlame(sel){
   let value = level / 20;
   if (overall) value *= 2;
@@ -202,18 +241,17 @@ function recalcFlame(sel){
 }
 
 function get_stat_mult(){
-  if (level < 180)
-    return 3.5;
-  else
+  if (superior)
     return 5.0;
+  else
+    return 3.5;
 }
 
 function get_atk_mult(){
-  if (eq_type == 0)
-    return level < 180 ? 0 : 2.5;
-  else if (eq_type == 1)
-    return level < 180 ? 2.9 : 2.9; //NOT VERIFIED YET!!!
-  else
+  if (eq_type == 0) //armor
+    return superior ? 2.5 : 0;
+  else if (eq_type == 1) //weapon
+    return superior ? 2.5 : 2.9;
     return 0;
 }
 
@@ -232,8 +270,13 @@ function reverse_atk(atk, atk_mult, stars){
     target_base = Math.ceil(target_base);
     //verification
     while(true){
-      let a = target_base + getNormAtkMult(stars) * Math.floor(target_base / 50);
+      let a = target_base;
+      if (stars >= 4) a += Math.floor(target_base / 50);
+      if (stars >= 5) a += Math.floor(2 * target_base / 50);
+      if (stars >= 6) a += Math.floor(3 * target_base / 50);
+      if (stars >= 7) a += Math.floor(4 * target_base / 50);
       if (a < atk) target_base++;
+      else if (a > atk) target_base--;
       else break;
     }
     //return
@@ -245,6 +288,7 @@ function reverse_atk(atk, atk_mult, stars){
     while(true){
       let a = target_base + (target_base / 5.0) * (stars / 15) + atk_mult * (level / 90) * stars;
       if (a < atk) target_base++;
+      else if (a > atk) target_base--;
       else break;
     }     
     return target_base;
@@ -262,19 +306,12 @@ function reverse_stat(stat, stat_mult, stars){
   target_base = Math.ceil(target_base);
   while(true){
     let a = target_base + (target_base / 7.5) * (stars / 15) + stat_mult * (level / 90) * stars;
-    if (a < stat) target_base++;
+      if (a < stat) target_base++;
+      else if (a > stat) target_base--;
     else break;
   }  
   console.log(target_base);
   return target_base;
-}
-
-function getNormAtkMult(star){
-  if (star < 4) return 0;
-  else if (star == 4) return 1;
-  else if (star == 5) return 3;
-  else if (star == 6) return 6;
-  else return 10;
 }
 
 function recalcStats(){
@@ -297,7 +334,12 @@ function recalcStats(){
     let s3 = base_atk;
     
     if (atk_mult == 0)
-      s3 += getNormAtkMult(i) * Math.floor(base_atk / 50);    
+    {
+      if (i >= 4) s3 += Math.floor(base_atk / 50);
+      if (i >= 5) s3 += Math.floor(2 * base_atk / 50);
+      if (i >= 6) s3 += Math.floor(3 * base_atk / 50);
+      if (i >= 7) s3 += Math.floor(4 * base_atk / 50);
+    }
     else
       s3 = base_atk + (base_atk / 5.0) * (i / 15) + atk_mult * (level / 90) * i;
     
@@ -309,24 +351,4 @@ function recalcStats(){
     stat3nodes[i].innerText = Math.floor(s3);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
