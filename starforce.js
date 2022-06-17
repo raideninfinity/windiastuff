@@ -21,12 +21,16 @@ $(document).ready(function() {
         <input type="radio" id="eq_type_1" name="eq_type" value="0" checked>Armor
         <input type="radio" id="eq_type_2" name="eq_type" value="1">Weapon
         <input type="radio" id="eq_type_3" name="eq_type" value="2">Superior
-        <input type="radio" id="eq_type_4" name="eq_type" value="3">Tyrant Cape (Doesn't work for now)
+        <input type="radio" id="eq_type_4" name="eq_type" value="3" disabled>Tyrant Cape (Not implemented!)
         <!--<input type="checkbox" id="check0" name="c_superior" value="superior">Superior-->
       </p>  
       <table id="table1">
       </table>
       <p>
+      <p>How to use: Choose equipment type, choose level, enter stats, then enter flame.
+      <p>Choose star amount if reversing to find base stat.</p>
+      <p>+ Flame: Adds max flame to the base stat.</p>
+      <p>- Flame: Removes flame to obtain base stat.</p>
       <a href="index.html">Back</a></p>`);
     $("#eq_type_1").change(radioChange);
     $("#eq_type_2").change(radioChange);
@@ -123,8 +127,15 @@ $(document).ready(function() {
       if (i == 0){
         let btn = document.createElement('button');
         btn.type = 'button';
-        btn.innerHTML = 'Flame';
+        btn.innerHTML = '+ Flame';
         btn.onclick = maxFlames;
+        row.childNodes[4].append(btn);
+      }
+      else if (i == 1){
+        let btn = document.createElement('button');
+        btn.type = 'button';
+        btn.innerHTML = '- Flame';
+        btn.onclick = removeFlames;
         row.childNodes[4].append(btn);
       }
     }
@@ -155,6 +166,31 @@ function maxFlames(){
     f2.selectedIndex = 10;
     let v2 = parseInt(s2.value) + parseInt(f2.value);
     s2.value = v2;
+  }
+  flame1 = parseInt(f1.value);
+  flame2 = parseInt(f2.value);
+  stat1 = parseInt(s1.value);
+  stat2 = parseInt(s2.value);
+  recalcStats();
+  lock = false;
+}
+
+function removeFlames(){
+  if (lock) return;
+  lock = true;  
+  let f1 = flameRow.childNodes[1].firstChild;
+  let f2 = flameRow.childNodes[2].firstChild;
+  let s1 = currentRow.childNodes[1].firstChild;
+  let s2 = currentRow.childNodes[2].firstChild;
+  if (f1.selectedIndex > 0 && parseInt(s1.value) >= parseInt(f1.value)){
+    let v1 = parseInt(s1.value) - parseInt(f1.value);
+    s1.value = v1;
+    f1.selectedIndex = 0;
+  }
+  if (f2.selectedIndex > 0 && parseInt(s2.value) >= parseInt(f2.value)){
+    let v2 = parseInt(s2.value) - parseInt(f2.value);
+    s2.value = v2;
+    f2.selectedIndex = 0;
   }
   flame1 = parseInt(f1.value);
   flame2 = parseInt(f2.value);
@@ -377,24 +413,4 @@ function recalcStats(){
     stat3nodes[i].innerText = Math.floor(s3);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
