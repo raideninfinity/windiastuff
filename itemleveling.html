@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Windia Item Leveling Simulator</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+	<script>
+		if(!window.jQuery) {
+			document.write('<script src="lib/jquery-3.6.0.min.js"><\/script>')
+		}
+	</script>
+  <script src="itemleveling.js"></script>
+  <style>
+    td, th {
+      border: 1px solid #ddd;
+      padding: 4px;
+      min-width: 80px;
+    }
+    th {
+      padding-top: 4px;
+      padding-bottom: 4px;
+      background-color: #03006D;
+      color: white;
+    }
+    
+    /*tr:nth-child(4){background-color: #aafef1;}
+    tr:nth-child(11){background-color: #aafeaa;}
+    tr:nth-child(15){background-color: #edaafe;}*/
+    
+    button {
+      width:100%;
+      display:block;
+    }
+
+    tr td{text-align: center;}
+  </style>
+</head>
+<body>
+<div id="main"></div>
+</body>
+</html>
