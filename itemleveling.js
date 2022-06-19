@@ -7,6 +7,7 @@ $(document).ready(function() {
       <table id="table1">
       </table>
       <p></p>
+      <p>Last Updated: 19 June 2022 8:51 AM GMT+8</p>
       <a href="index.html">Back</a></p>
     `);
     $("#table1").append("<tr><th>Base Stat</th><th>Base Atk</th><th></th><th>Goal Stat</th><th>Goal Atk</th></tr>");
