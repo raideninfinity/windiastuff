@@ -7,7 +7,7 @@ $(document).ready(function() {
       <table id="table1">
       </table>
       <p></p>
-      <p>Last Updated: 19 June 2022 8:51 AM GMT+8</p>
+      <p>Last Updated: 22 June 2022 6:30 AM GMT+8</p>
       <a href="index.html">Back</a></p>
     `);
     $("#table1").append("<tr><th>Base Stat</th><th>Base Atk</th><th></th><th>Goal Stat</th><th>Goal Atk</th></tr>");
@@ -19,27 +19,27 @@ $(document).ready(function() {
     inputRow.childNodes[1].innerHTML = `<input type="number" id="numeric2" value="0" style="width: 64px;" min="0" max="10000">`;
     inputRow.childNodes[2].innerHTML = `<input type="checkbox" id="check1">Level 5`;
     inputRow.childNodes[2].style = `text-align: left`;
-    inputRow.childNodes[3].innerHTML = `<input type="number" id="numeric3" value="0" style="width: 64px;" min="0" max="10000" disabled>`;
-    inputRow.childNodes[4].innerHTML = `<input type="number" id="numeric4" value="0" style="width: 64px;" min="0" max="10000" disabled>`;
+    //inputRow.childNodes[3].innerHTML = `<input type="number" id="numeric3" value="0" style="width: 64px;" min="0" max="10000" disabled>`;
+    //inputRow.childNodes[4].innerHTML = `<input type="number" id="numeric4" value="0" style="width: 64px;" min="0" max="10000" disabled>`;
     let row2 = document.createElement("tr");
     row2.innerHTML = "<td></td><td></td><td colspan=2></td><td></td>";
     actionRow = row2; 
     $("#table1").append(row2);  
-    let btn = document.createElement('button');
-    btn.type = 'button';
-    btn.disabled = true;
-    btn.innerHTML = 'Simulate';
-    btn.onclick = simulateLeveling;
-    actionRow.childNodes[0].append(btn);
+    //let btn = document.createElement('button');
+    //btn.type = 'button';
+    //btn.disabled = true;
+    //btn.innerHTML = 'Simulate';
+    //btn.onclick = simulateLeveling;
+    //actionRow.childNodes[0].append(btn);
     btn = document.createElement('button');
     btn.type = 'button';
-    btn.innerHTML = 'Sim. Once';
+    btn.innerHTML = 'Simulate';
     btn.onclick = simulateOnce;
     actionRow.childNodes[1].append(btn);
     btn = document.createElement('button');
-    actionRow.childNodes[2].innerHTML = `<input type="checkbox" id="check2" checked disabled>Percentile`;
-    actionRow.childNodes[2].style = `text-align: left`;
-    actionRow.childNodes[3].innerHTML = `<input type="number" id="numeric5" value="50" style="width: 64px;" min="5" max="95" step="5"  disabled>`;
+    //actionRow.childNodes[2].innerHTML = `<input type="checkbox" id="check2" checked disabled>Percentile`;
+    //actionRow.childNodes[2].style = `text-align: left`;
+    //actionRow.childNodes[3].innerHTML = `<input type="number" id="numeric5" value="50" style="width: 64px;" min="5" max="95" step="5"  disabled>`;
     let row3 = document.createElement("tr");
     row3.innerHTML = `<td colspan="5"><div id="div-result" style="min-height: 400px; max-height: 400px; overflow-y: scroll; text-align: left; padding: 4px; font-family: Courier; font-size: 0.8em"></div></td>`;
     resultsRow = row3;
