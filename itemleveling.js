@@ -10,7 +10,7 @@ $(document).ready(function() {
       <p>Last Updated: 22 June 2022 6:30 AM GMT+8</p>
       <a href="index.html">Back</a></p>
     `);
-    $("#table1").append("<tr><th>Base Stat</th><th>Base Atk</th><th></th><th>Goal Stat</th><th>Goal Atk</th></tr>");
+    $("#table1").append("<tr><th>Base Stat</th><th>Base Atk</th><th></th><th></th><th></th></tr>");
     let row1 = document.createElement("tr");
     row1.innerHTML = "<td></td><td></td><td></td><td></td><td></td>";
     inputRow = row1; 
