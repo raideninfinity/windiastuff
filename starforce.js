@@ -21,7 +21,7 @@ $(document).ready(function() {
         <input type="radio" id="eq_type_1" name="eq_type" value="0" checked>Armor
         <input type="radio" id="eq_type_2" name="eq_type" value="1">Weapon
         <input type="radio" id="eq_type_3" name="eq_type" value="2">Superior
-        <input type="radio" id="eq_type_4" name="eq_type" value="3" disabled>Tyrant Cape (Not implemented!)
+        <input type="radio" id="eq_type_4" name="eq_type" value="3" disabled>Superior Cape (Not implemented!)
         <!--<input type="checkbox" id="check0" name="c_superior" value="superior">Superior-->
       </p>  
       <table id="table1">
