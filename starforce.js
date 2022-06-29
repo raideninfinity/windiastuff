@@ -4,6 +4,7 @@ var starRows = [];
 var stat1nodes = [];
 var stat2nodes = [];
 var stat3nodes = [];
+var levelNode;
 var eq_type = 0;
 var stars = 0;
 var overall = false;
@@ -27,11 +28,11 @@ $(document).ready(function() {
       <table id="table1">
       </table>
       <p>
-      <p>How to use: Choose equipment type, choose level, enter stats, then enter flame.
+      <p>How to use: Choose equipment type, enter level, enter stats, then enter flame.
       <p>Choose star amount if reversing to find base stat.</p>
       <p>+ Flame: Adds max flame to the base stat.</p>
       <p>- Flame: Removes flame to obtain base stat.</p>
-      <p>Last Updated: 17 June 2022 11:13 PM GMT+8</p>
+      <p>Last Updated: 29 June 2022 7:13 PM GMT+8</p>
       <a href="index.html">Back</a></p>`);
     $("#eq_type_1").change(radioChange);
     $("#eq_type_2").change(radioChange);
@@ -101,7 +102,7 @@ $(document).ready(function() {
     }
     flameRow.childNodes[2].append(flame2Sel);    
     //Add Level Select
-    let levelSel = document.createElement('select');
+    /*let levelSel = document.createElement('select');
     levelSel.name = "level";
     levelSel.id = "select4";
     levelSel.style = "width: 80px;";
@@ -111,8 +112,10 @@ $(document).ready(function() {
       opt.innerHTML = `Lv. ${opt.value}+`;
       if (i == 0) opt.selected = true;
       levelSel.appendChild(opt);
-    }   
-    flameRow.childNodes[4].append(levelSel);       
+    }*/     
+    let label1 = document.createElement('div');
+    label1.innerHTML = `Level: `;
+    flameRow.childNodes[4].append(label1); 
     //Populate Numbers
     for(let i = 0; i < starRows.length; i++){
       let row = starRows[i];
@@ -126,13 +129,17 @@ $(document).ready(function() {
       node3.innerText = "0";
       stat3nodes.push(node3);  
       if (i == 0){
+        row.childNodes[4].innerHTML = `<input type="number" id="numeric4" value="0" style="width: 64px;" min="0" max="255">`;
+        levelNode = row.childNodes[4];
+      }
+      else if (i == 1){
         let btn = document.createElement('button');
         btn.type = 'button';
         btn.innerHTML = '+ Flame';
         btn.onclick = maxFlames;
         row.childNodes[4].append(btn);
       }
-      else if (i == 1){
+      else if (i == 2){
         let btn = document.createElement('button');
         btn.type = 'button';
         btn.innerHTML = '- Flame';
@@ -148,7 +155,7 @@ $(document).ready(function() {
     flameRow.childNodes[1].firstChild.addEventListener("change", flameChange);
     flameRow.childNodes[2].firstChild.addEventListener("change", flameChange);
     flameRow.childNodes[3].firstChild.addEventListener("change", overallChange);
-    flameRow.childNodes[4].firstChild.addEventListener("change", levelChange);
+    levelNode.firstChild.addEventListener("change", levelChange);
 });
 
 function maxFlames(){
@@ -243,7 +250,7 @@ function procFlameChange(){
 function levelChange(){
   if (lock) return;
   lock = true; 
-  level = parseInt(flameRow.childNodes[4].firstChild.value);
+  level = parseInt(levelNode.firstChild.value);
   recalcFlame(flameRow.childNodes[1].firstChild);
   recalcFlame(flameRow.childNodes[2].firstChild);
   procFlameChange();
@@ -271,8 +278,10 @@ function superiorChange(){
 }
 
 function recalcFlame(sel){
-  let value = level / 20;
+  let value = level;
   if (overall) value *= 2;
+  value /= 20;
+  value = Math.floor(value);
   value += 1;  
   for(let i = 0; i < 11; i++){
     sel.options[i].value = i * value;
